@@ -32,8 +32,9 @@ class CommentForm extends Component {
     handleSubmit(values){
         // alert("Current State is: "+ JSON.stringify(values));
         this.toggleModal();
-        alert(JSON.stringify(values));
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        alert(values.author);
+
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
@@ -50,7 +51,7 @@ class CommentForm extends Component {
                                 <Label md={{size: 12}} htmlFor="rating">Rating</Label>
                                 <Col md={{size: 12}}>
                                     <Control.select className="form-control" model=".rating" name="rating" id="rating">
-                                        <option value="1">1</option>
+                                        <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
@@ -63,13 +64,13 @@ class CommentForm extends Component {
                                 <Col md={{size: 12}}>
                                     <Control.text  placeholder="Your Name"
                                      className="form-control" 
-                                     model=".name" name="author" id="name" 
+                                     model=".author" name="author" id="author" 
                                      validators={{
                                          required, minLength: minLength(3), maxLength : maxLength(15)
                                      }} />
                                      <Errors 
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             required: 'Required',
@@ -118,7 +119,7 @@ class CommentForm extends Component {
         }
       }
 
-    function RenderComments({comments, addComment, dishId}){
+    function RenderComments({comments, postComment, dishId}){
         if(comments!=null){
             return(
                 <div>
@@ -130,7 +131,7 @@ class CommentForm extends Component {
                     </div>
                     )
                 )}
-                  <CommentForm dishId={dishId} addComment={addComment} />
+                  <CommentForm dishId={dishId} postComment={postComment} />
 
                 </div>
             );
@@ -178,7 +179,7 @@ class CommentForm extends Component {
                     <RenderDish dish={props.dish} />
                     <div className="col-12 col-md-5">
                         <RenderComments comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}
                         />
                     </div>
